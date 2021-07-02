@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
+const connectDb = require('./config/db');
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json({ urlencoded: false }));
+// Coonect to Database;
+connectDb();
+
+app.use(express.json());
 
 app.get('/', (req, res) =>
   res.json({
@@ -10,16 +14,16 @@ app.get('/', (req, res) =>
   })
 );
 
-//Auth route
+// Auth route
 app.use('/api/auth', require('./routes/auth'));
 
-//User route
+// User route
 app.use('/api/users', require('./routes/users'));
 
-//Contacts route
+// Contacts route
 app.use('/api/contacts', require('./routes/contacts'));
 
-//error route
+// Error route
 app.all('*', (req, res) => {
   res.status(404).json({
     error: 'Route not found',
